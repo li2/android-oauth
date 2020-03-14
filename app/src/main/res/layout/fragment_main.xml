@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="me.li2.android.oauth.google.GoogleOAuthKt" />
+
+        <variable
+            name="googleAccount"
+            type="com.google.android.gms.auth.api.signin.GoogleSignInAccount" />
+
+        <variable
+            name="facebookAccount"
+            type="me.li2.android.oauth.facebook.FacebookSignInAccount" />
+
+        <variable
+            name="isLoading"
+            type="Boolean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_google_signin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign In"
+            android:visibility="@{googleAccount == null}"
+            app:elevation="4dp"
+            app:icon="@drawable/ic_google"
+            app:iconTint="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/section_google_signout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{googleAccount != null}"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/TextAppearance.MaterialComponents.Button"
+                android:id="@+id/btn_google_signout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign Out"
+                app:icon="@drawable/ic_google"
+                app:iconTint="@null"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/TextAppearance.MaterialComponents.Button"
+                android:id="@+id/btn_google_revoke_access"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Revoke Access"
+                app:icon="@drawable/ic_google"
+                app:iconTint="@null"
+                app:layout_constraintStart_toEndOf="@id/btn_google_signout"
+                app:layout_constraintTop_toTopOf="@id/btn_google_signout"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/iv_google_account_avator"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@{googleAccount != null ? googleAccount.photoUrl.toString() : null}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_google_signout"
+                tools:ignore="ContentDescription"
+                tools:src="@tools:sample/avatars"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_google_account_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{googleAccount != null ? GoogleOAuthKt.getDisplayedInfo(googleAccount) : ``}"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_google_account_avator"
+                tools:text="Weiyi Li"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/TextAppearance.MaterialComponents.Button"
+            android:id="@+id/btn_facebook_signin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Sign In"
+            android:visibility="@{facebookAccount == null}"
+            app:elevation="4dp"
+            app:icon="@drawable/ic_facebook"
+            app:iconTint="@android:color/holo_blue_dark"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline"
+            tools:ignore="HardcodedText" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/section_facebook_signout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{facebookAccount != null}"
+            app:layout_constraintTop_toBottomOf="@id/guideline">
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/TextAppearance.MaterialComponents.Button"
+                android:id="@+id/btn_facebook_signout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign Out"
+                app:icon="@drawable/ic_facebook"
+                app:iconTint="@android:color/holo_blue_dark"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/TextAppearance.MaterialComponents.Button"
+                android:id="@+id/btn_facebook_revoke_access"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Revoke Access"
+                app:icon="@drawable/ic_facebook"
+                app:iconTint="@android:color/holo_blue_dark"
+                app:layout_constraintStart_toEndOf="@id/btn_facebook_signout"
+                app:layout_constraintTop_toTopOf="@id/btn_facebook_signout"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/iv_facebook_account_avator"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@{facebookAccount != null ? facebookAccount.photoUrl.toString() : null}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_facebook_signout"
+                tools:ignore="ContentDescription"
+                tools:src="@tools:sample/avatars"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_facebook_account_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{facebookAccount != null ? facebookAccount.getDisplayedInfo() : ``}"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_facebook_account_avator"
+                tools:text="Weiyi Li"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

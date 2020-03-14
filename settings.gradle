@@ -1,2 +1,3 @@
 rootProject.name='OAuth Sample'
 include ':app'
+include ':oauth'

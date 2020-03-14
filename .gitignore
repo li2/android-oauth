@@ -12,3 +12,6 @@
 /captures
 .externalNativeBuild
 .cxx
+api_google.xml
+api_facebook.xml
+
