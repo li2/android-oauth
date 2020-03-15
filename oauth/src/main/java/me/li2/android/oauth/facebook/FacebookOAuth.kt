@@ -14,10 +14,9 @@ import org.json.JSONException
 /**
  * Facebook OAuth.
  *
- * To use this lib you have to define two strings in your application
- *
- * facebook_app_id
- * facebook_login_protocol_scheme
+ * To make this lib works,
+ * 1. Two strings facebook_app_id, facebook_login_protocol_scheme must be defined in your application;
+ * 2. onActivityResult must be called in your fragment onActivityResult callback.
  */
 class FacebookOAuth : OAuth<FacebookSignInAccount> {
     private val callbackManager = CallbackManager.Factory.create()!!
