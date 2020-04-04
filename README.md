@@ -25,7 +25,7 @@ googleOAuth.signIn(this)
     })
 ```
 
-For Facebook OAuth, you also need to register your App to Facebook to get ID and protocol scheme and define the following two strings:
+For Facebook OAuth, you also need to [register your App to Facebook](https://developers.facebook.com/docs/facebook-login/android) to get ID and protocol scheme and define the following two strings:
 
 ```xml
 <string name="facebook_app_id">xyz</string>
