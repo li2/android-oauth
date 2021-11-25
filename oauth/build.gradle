@@ -40,7 +40,7 @@ dependencies {
     api "com.facebook.android:facebook-login:$facebook_login_version"
 
     //Rx
-    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid2_version"
     implementation "com.petarmarijanovic:rx-activity-result:$rxActivityResult_version"
 
     //Timber
