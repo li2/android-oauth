@@ -1,8 +1,8 @@
 package me.li2.android.oauth
 
 import androidx.fragment.app.Fragment
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
 interface OAuth<T> {
     /**

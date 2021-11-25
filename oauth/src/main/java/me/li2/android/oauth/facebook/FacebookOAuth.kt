@@ -6,8 +6,9 @@ import androidx.fragment.app.Fragment
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import io.reactivex.Completable
-import io.reactivex.Single
+import hu.akarnokd.rxjava3.bridge.RxJavaBridge
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 import me.li2.android.oauth.OAuth
 import org.json.JSONException
 
@@ -25,17 +26,18 @@ class FacebookOAuth : OAuth<FacebookSignInAccount> {
         val accessToken: AccessToken? = AccessToken.getCurrentAccessToken()
         val profile: Profile? = Profile.getCurrentProfile()
         return FacebookSignInAccount(
-                displayName = profile?.name,
-                photoUrl = if (accessToken != null) getPhotoUrl(accessToken.userId) else null,
-                token = accessToken?.token)
+            displayName = profile?.name,
+            photoUrl = if (accessToken != null) getPhotoUrl(accessToken.userId) else null,
+            token = accessToken?.token
+        )
     }
 
     // https://github.com/pchmn/RxSocialAuth/blob/master/library/src/main/java/com/pchmn/rxsocialauth/auth/RxFacebookAuthFragment.java
     override fun signIn(fragment: Fragment): Single<FacebookSignInAccount> {
         return getAccessToken(fragment)
-                .flatMap { accessToken ->
-                    getUserInfo(accessToken)
-                }
+            .flatMap { accessToken ->
+                getUserInfo(accessToken)
+            }
     }
 
     private fun getAccessToken(fragment: Fragment): Single<AccessToken> {
@@ -54,7 +56,8 @@ class FacebookOAuth : OAuth<FacebookSignInAccount> {
                 }
             })
             // https://stackoverflow.com/a/29379794/2722270
-            LoginManager.getInstance().logInWithReadPermissions(fragment, listOf(PERMISSIONS_PUBLIC_PROFILE, PERMISSIONS_EMAIL))
+            LoginManager.getInstance()
+                .logInWithReadPermissions(fragment, listOf(PERMISSIONS_PUBLIC_PROFILE, PERMISSIONS_EMAIL))
         }
     }
 
@@ -64,10 +67,11 @@ class FacebookOAuth : OAuth<FacebookSignInAccount> {
                 try {
                     val profile = Profile.getCurrentProfile()
                     val account = FacebookSignInAccount(
-                            displayName = profile?.name,
-                            email = jsonObject?.getString(PERMISSIONS_EMAIL),
-                            photoUrl = getPhotoUrl(accessToken.userId),
-                            token = accessToken.token)
+                        displayName = profile?.name,
+                        email = jsonObject?.getString(PERMISSIONS_EMAIL),
+                        photoUrl = getPhotoUrl(accessToken.userId),
+                        token = accessToken.token
+                    )
                     emitter.onSuccess(account)
                 } catch (exception: JSONException) {
                     emitter.onError(exception)
@@ -85,18 +89,23 @@ class FacebookOAuth : OAuth<FacebookSignInAccount> {
 
     override fun revokeAccess(): Completable {
         return Completable.create { emitter ->
-            GraphRequest(AccessToken.getCurrentAccessToken(), PERMISSIONS_PATH, null, HttpMethod.DELETE, GraphRequest.Callback { response ->
-                try {
-                    response?.jsonObject?.getBoolean(SUCCESS)
-                } catch (e: JSONException) {
-                    emitter.onError(e)
-                }
-                if (response?.error == null) {
-                    emitter.onComplete()
-                } else {
-                    emitter.onError(response.error.exception)
-                }
-            }).executeAsync()
+            GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                PERMISSIONS_PATH,
+                null,
+                HttpMethod.DELETE,
+                GraphRequest.Callback { response ->
+                    try {
+                        response?.jsonObject?.getBoolean(SUCCESS)
+                    } catch (e: JSONException) {
+                        emitter.onError(e)
+                    }
+                    if (response?.error == null) {
+                        emitter.onComplete()
+                    } else {
+                        emitter.onError(response.error.exception)
+                    }
+                }).executeAsync()
         }
     }
 
