@@ -13,11 +13,11 @@ import io.reactivex.rxjava3.kotlin.plusAssign
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import me.li2.android.oauth.facebook.FacebookOAuth
 import me.li2.android.oauth.google.GoogleOAuth
-import me.li2.android.oauthsample.databinding.FragmentMainBinding
+import me.li2.android.oauthsample.databinding.OauthSampleFragmentBinding
 
-class MainFragment : Fragment() {
+class OauthSampleFragment : Fragment() {
 
-    private lateinit var binding: FragmentMainBinding
+    private lateinit var binding: OauthSampleFragmentBinding
     private val compositeDisposable = CompositeDisposable()
 
     private val facebookOAuth: FacebookOAuth = FacebookOAuth()
@@ -27,7 +27,8 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.oauth_sample_fragment, container, false)
         return binding.root
     }
 
