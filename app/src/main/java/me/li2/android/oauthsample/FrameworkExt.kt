@@ -6,11 +6,11 @@ import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 fun <T> Observable<T>.throttleFirstShort() = this.throttleFirst(500L, TimeUnit.MILLISECONDS)!!
@@ -28,9 +28,9 @@ fun setImageUrl(view: ImageView, src: String?) {
 }
 
 fun <T> Single<T>.forUi(): Single<T> =
-        this.observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+    this.observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
 
 fun Completable.forUi(): Completable =
-        this.observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+    this.observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())

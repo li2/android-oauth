@@ -56,10 +56,11 @@ dependencies {
     implementation "com.google.android.material:material:$g_material_version"
 
     //Rx
-    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid2_version"
-    implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlin_version"
-    implementation "com.jakewharton.rxbinding3:rxbinding:$rxbinding3_version"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroid_version"
+    implementation "io.reactivex.rxjava3:rxkotlin:$rxKotlin_version"
+    implementation "com.jakewharton.rxbinding4:rxbinding:$rxbinding4_version"
     implementation "com.petarmarijanovic:rx-activity-result:$rxActivityResult_version"
+    implementation "com.github.akarnokd:rxjava3-bridge:$rxJava3_bridge_version"
 
     //Timber
     implementation "com.jakewharton.timber:timber:$timber_version"

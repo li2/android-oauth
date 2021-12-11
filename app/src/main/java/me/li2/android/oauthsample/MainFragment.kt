@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.jakewharton.rxbinding3.view.clicks
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.rxkotlin.subscribeBy
+import com.jakewharton.rxbinding4.view.clicks
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.plusAssign
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_main.*
 import me.li2.android.oauth.facebook.FacebookOAuth
 import me.li2.android.oauth.google.GoogleOAuth
@@ -23,9 +23,11 @@ class MainFragment : Fragment() {
 
     private val facebookOAuth: FacebookOAuth = FacebookOAuth()
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
         return binding.root
     }
@@ -33,18 +35,21 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val googleOAuth = GoogleOAuth(requireContext(), requireContext().getString(R.string.google_server_client_id))
+        val googleOAuth = GoogleOAuth(
+            requireContext(),
+            requireContext().getString(R.string.google_server_client_id)
+        )
 
         binding.googleAccount = googleOAuth.getLastSignedInAccount()
         binding.facebookAccount = facebookOAuth.getLastSignedInAccount()
 
         compositeDisposable += btn_google_signin.clicks().throttleFirstShort().subscribe {
             compositeDisposable += googleOAuth.signIn(this)
-                    .forUi()
-                    .subscribeBy(
-                            onSuccess = { binding.googleAccount = it },
-                            onError = { toast(it.message.toString()) }
-                    )
+                .forUi()
+                .subscribeBy(
+                    onSuccess = { binding.googleAccount = it },
+                    onError = { toast(it.message.toString()) }
+                )
         }
 
         compositeDisposable += btn_google_signout.clicks().subscribe {
@@ -62,11 +67,11 @@ class MainFragment : Fragment() {
         // FACEBOOK
         compositeDisposable += btn_facebook_signin.clicks().throttleFirstShort().subscribe {
             compositeDisposable += facebookOAuth.signIn(this)
-                    .forUi()
-                    .subscribeBy(
-                            onSuccess = { binding.facebookAccount = it },
-                            onError = { toast(it.message.toString()) }
-                    )
+                .forUi()
+                .subscribeBy(
+                    onSuccess = { binding.facebookAccount = it },
+                    onError = { toast(it.message.toString()) }
+                )
         }
 
         compositeDisposable += btn_facebook_signout.clicks().subscribe {
@@ -77,11 +82,11 @@ class MainFragment : Fragment() {
 
         compositeDisposable += btn_facebook_revoke_access.clicks().subscribe {
             compositeDisposable += facebookOAuth.revokeAccess()
-                    .forUi()
-                    .subscribeBy(
-                            onComplete = { binding.facebookAccount = null },
-                            onError = { }
-                    )
+                .forUi()
+                .subscribeBy(
+                    onComplete = { binding.facebookAccount = null },
+                    onError = { }
+                )
         }
     }
 
