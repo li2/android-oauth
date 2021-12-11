@@ -11,7 +11,6 @@ import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.plusAssign
 import io.reactivex.rxjava3.kotlin.subscribeBy
-import kotlinx.android.synthetic.main.fragment_main.*
 import me.li2.android.oauth.facebook.FacebookOAuth
 import me.li2.android.oauth.google.GoogleOAuth
 import me.li2.android.oauthsample.databinding.FragmentMainBinding
@@ -43,7 +42,7 @@ class MainFragment : Fragment() {
         binding.googleAccount = googleOAuth.getLastSignedInAccount()
         binding.facebookAccount = facebookOAuth.getLastSignedInAccount()
 
-        compositeDisposable += btn_google_signin.clicks().throttleFirstShort().subscribe {
+        compositeDisposable += binding.btnGoogleSignin.clicks().throttleFirstShort().subscribe {
             compositeDisposable += googleOAuth.signIn(this)
                 .forUi()
                 .subscribeBy(
@@ -52,20 +51,20 @@ class MainFragment : Fragment() {
                 )
         }
 
-        compositeDisposable += btn_google_signout.clicks().subscribe {
+        compositeDisposable += binding.btnGoogleSignout.clicks().subscribe {
             compositeDisposable += googleOAuth.signOut().subscribeBy {
                 binding.googleAccount = null
             }
         }
 
-        compositeDisposable += btn_google_revoke_access.clicks().subscribe {
+        compositeDisposable += binding.btnGoogleRevokeAccess.clicks().subscribe {
             compositeDisposable += googleOAuth.revokeAccess().subscribeBy {
                 binding.googleAccount = googleOAuth.getLastSignedInAccount()
             }
         }
 
         // FACEBOOK
-        compositeDisposable += btn_facebook_signin.clicks().throttleFirstShort().subscribe {
+        compositeDisposable += binding.btnFacebookSignin.clicks().throttleFirstShort().subscribe {
             compositeDisposable += facebookOAuth.signIn(this)
                 .forUi()
                 .subscribeBy(
@@ -74,13 +73,13 @@ class MainFragment : Fragment() {
                 )
         }
 
-        compositeDisposable += btn_facebook_signout.clicks().subscribe {
+        compositeDisposable += binding.btnFacebookSignout.clicks().subscribe {
             compositeDisposable += facebookOAuth.signOut().subscribeBy {
                 binding.facebookAccount = null
             }
         }
 
-        compositeDisposable += btn_facebook_revoke_access.clicks().subscribe {
+        compositeDisposable += binding.btnFacebookRevokeAccess.clicks().subscribe {
             compositeDisposable += facebookOAuth.revokeAccess()
                 .forUi()
                 .subscribeBy(
