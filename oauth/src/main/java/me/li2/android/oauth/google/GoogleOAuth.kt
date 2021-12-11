@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.gms.common.api.ApiException
 import com.petarmarijanovic.rxactivityresult.RxActivityResult
 import hu.akarnokd.rxjava3.bridge.RxJavaBridge
@@ -44,14 +45,15 @@ class GoogleOAuth(
             .start(googleAuthClient.signInIntent)
             .`as`(RxJavaBridge.toV3Single())
             .map { result ->
-                val resultCode = result.resultCode
-                if (resultCode == Activity.RESULT_OK) {
+                if (result.resultCode == Activity.RESULT_OK) {
                     try {
                         val accountTask = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-                        val account = accountTask.getResult(ApiException::class.java)
-                        account?.let { account }
-                    } catch (exception: ApiException) {
-                        throw GoogleSignInException(exception)
+                        accountTask.getResult(ApiException::class.java)
+                            ?: throw GoogleSignInNoResultException
+                    } catch (apiException: ApiException) {
+                        val message =
+                            GoogleSignInStatusCodes.getStatusCodeString(apiException.statusCode)
+                        throw GoogleSignInException(message, apiException.cause)
                     }
                 } else {
                     throw GoogleSignInDeniedException
@@ -64,7 +66,7 @@ class GoogleOAuth(
             googleAuthClient.signOut()
                 .addOnSuccessListener { emitter.onComplete() }
                 .addOnFailureListener { emitter.onError(it) }
-                .addOnCanceledListener { emitter.onError(CancelledException) }
+                .addOnCanceledListener { emitter.onError(GoogleSignInCancelledException) }
         }
     }
 
@@ -73,7 +75,7 @@ class GoogleOAuth(
             googleAuthClient.revokeAccess()
                 .addOnSuccessListener { emitter.onComplete() }
                 .addOnFailureListener { emitter.onError(it) }
-                .addOnCanceledListener { emitter.onError(CancelledException) }
+                .addOnCanceledListener { emitter.onError(GoogleSignInCancelledException) }
         }
     }
 }

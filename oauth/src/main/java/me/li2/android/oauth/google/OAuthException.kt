@@ -4,12 +4,13 @@
  */
 package me.li2.android.oauth.google
 
-import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
-import com.google.android.gms.common.api.ApiException
+data class GoogleSignInException(
+    override val message: String,
+    override val cause: Throwable?
+) : Exception(message, cause)
 
-data class GoogleSignInException(private val apiException: ApiException)
-    : Exception(GoogleSignInStatusCodes.getStatusCodeString(apiException.statusCode), apiException.cause)
+object GoogleSignInNoResultException : Exception("No Google account found")
 
-object GoogleSignInDeniedException : Exception("Google Sign in action denied")
+object GoogleSignInDeniedException : Exception("Google Sign in denied")
 
-object CancelledException: Exception("cancelled")
+object GoogleSignInCancelledException : Exception("Google Sign in cancelled")
